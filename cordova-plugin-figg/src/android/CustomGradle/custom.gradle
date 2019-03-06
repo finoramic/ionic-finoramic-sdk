@@ -9,6 +9,7 @@ dependencies {
   compile(name:'finoramic-android-sdk', ext:'aar')
   implementation 'com.google.android.gms:play-services-location:16.0.0'
   implementation 'com.google.android.gms:play-services-auth:16.0.1'
+  implementation 'com.google.firebase:firebase-core:16.0.6'
 }
 
 android {
