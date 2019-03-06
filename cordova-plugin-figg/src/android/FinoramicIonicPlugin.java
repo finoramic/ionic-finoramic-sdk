@@ -11,6 +11,9 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+import android.os.Bundle;
+import android.app.Activity;
 
 import com.figg.sdk.android.Constants;
 import com.figg.sdk.android.FinoramicSdk;
@@ -72,10 +75,11 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
                 String result = "success";
                 //Write function to call finoramic API and return result via callbackContext.success
                 Intent signInIntent = FinoramicSdk.getSignInIntent(context, GOOGLE_CLIENT_ID, extraScopes);
+                cordova.setActivityResultCallback (this);
                 cordova.getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        cordova.getActivity().startActivityForResult(signInIntent, 10001);
+                        cordova.getActivity().startActivityForResult(signInIntent, SIGN_IN_REQUEST);
                     }
                 });
                 callbackContext.success(result);
@@ -87,6 +91,26 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
             callbackContext.error("Expected one non-empty string argument.");
         }
     }
+
+    @Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult");
+
+		// Result returned from launching the Intent from FinoramicSdk.getSignInIntent(...)
+		if (requestCode == SIGN_IN_REQUEST) {
+			if (resultCode == Activity.RESULT_OK) {
+				String gAccount = data.getStringExtra("account");
+				if (gAccount != null) {
+					Log.d(TAG, "CLIENT RECEIVED GOOGLE ACCOUNT : " + gAccount);
+					// Do whatever you want with your Google User
+				} else {
+					Log.d(TAG, "CLIENT DID NOT RECEIVE GOOGLE ACCOUNT");
+					// Handle unsuccessful sign-in
+				}
+			}
+		}
+	}
 
     private void sendSMS(JSONArray args, CallbackContext callbackContext){
         if (args != null) {
