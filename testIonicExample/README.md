@@ -9,6 +9,6 @@ Following are the steps to start existing ionic App.
 
 2. To run ionic app.\
   Start a android emulator or connect to Android phone.(OS API Level must be >=26)
-   ```
+  ```
   ionic cordova run android -l
   ```
