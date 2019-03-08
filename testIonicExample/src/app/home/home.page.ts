@@ -16,4 +16,9 @@ export class HomePage {
     FinoramicIonicPlugin.signIn();
     console.log('end');
     }
+  onClickSMS() {
+      console.log('start');
+      FinoramicIonicPlugin.sendSMS();
+      console.log('end');
+    }
 }
