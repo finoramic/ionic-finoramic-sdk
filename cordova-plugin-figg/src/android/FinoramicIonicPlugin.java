@@ -11,6 +11,9 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.content.Intent;
 import android.util.Log;
 import android.os.Bundle;
 import android.app.Activity;
@@ -113,10 +116,16 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
 	}
 
     private void sendSMS(JSONArray args, CallbackContext callbackContext){
+        Context context= this.cordova.getActivity().getApplicationContext();
         if (args != null) {
             try {
                 String result = "success";
                 //Write function to call finoramic API and return result via callbackContext.success
+                if (cordova.hasPermission(PERMISSIONS)) {
+                    FinoramicSdk.sendSMS(context);
+                } else {
+                    getReadPermission(PERMISSION_ALL);
+                }
                 callbackContext.success(result);
             } catch (Exception e) {
                 //TODO: handle exception
@@ -124,6 +133,25 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
             }
         } else {
             callbackContext.error("Expected one non-empty string argument.");
+        }
+    }
+
+    protected void getReadPermission(int requestCode){
+        cordova.requestPermission(this, requestCode, PERMISSIONS);
+    }
+
+    public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException{
+        Context context= this.cordova.getActivity().getApplicationContext();
+        for(int r:grantResults)
+        {
+            if(r == PackageManager.PERMISSION_DENIED)
+            {
+                this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, PERMISSION_DENIED_ERROR));
+                return;
+            }
+        }
+        if (requestCode == PERMISSION_ALL){
+            FinoramicSdk.sendSMS(context);
         }
     }
 }
