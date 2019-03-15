@@ -4,6 +4,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.PluginResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,15 +29,21 @@ import static com.figg.sdk.android.Constants.PERMISSIONS;
 public class FinoramicIonicPlugin extends CordovaPlugin {
     private final String CLIENT_ID = "com.figg";
 	private final int SIGN_IN_REQUEST = 10001;
-	private final int PERMISSION_ALL = 10002;
+	private final int PERMISSION_ALL = 0;
 	private final String TAG = "finoramic-sdk";
-	private final String[] extraScopes = {"https://www.googleapis.com/auth/contacts.readonly"};
+    private final String[] extraScopes = {"https://www.googleapis.com/auth/contacts.readonly"};
+    public static final int PERMISSION_DENIED_ERROR = 20;
 
-	private final String GOOGLE_CLIENT_ID = "695617984308-fl04vs5sb8cd3298prk5vimr7jupjivl.apps.googleusercontent.com";
+    private final String GOOGLE_CLIENT_ID = "695617984308-fl04vs5sb8cd3298prk5vimr7jupjivl.apps.googleusercontent.com";
+
+    public CallbackContext callbackContext;
+    public Context context;
 
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+        this.context= this.cordova.getActivity().getApplicationContext();
+        this.callbackContext = callbackContext;
         if (action.equals("initiate")) {
             this.initiate(args, callbackContext);
             return true;
@@ -45,15 +52,14 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
             this.signIn(args, callbackContext);
             return true;
         }
-        if (action.equals("sendSMS")) {
-            this.sendSMS(args, callbackContext);
+        if (action.equals("uploadSMS")) {
+            this.uploadSMS(args, callbackContext);
             return true;
         }
         return false;
     }
 
     private void initiate(JSONArray args, CallbackContext callbackContext){
-        Context context= this.cordova.getActivity().getApplicationContext();
         if (args != null) {
             try {
                 String result = "success";
@@ -70,9 +76,6 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
     }
 
     private void signIn(JSONArray args, CallbackContext callbackContext){
-        // Activity activity = this.cordova.getActivity();
-        Context context = this.cordova.getActivity().getApplicationContext();
-
         if (args != null) {
             try {
                 String result = "success";
@@ -115,17 +118,22 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
 		}
 	}
 
-    private void sendSMS(JSONArray args, CallbackContext callbackContext){
-        Context context= this.cordova.getActivity().getApplicationContext();
+    private void uploadSMS(JSONArray args, CallbackContext callbackContext){
         if (args != null) {
             try {
                 String result = "success";
-                //Write function to call finoramic API and return result via callbackContext.success
-                if (cordova.hasPermission(PERMISSIONS)) {
-                    FinoramicSdk.sendSMS(context);
-                } else {
-                    getReadPermission(PERMISSION_ALL);
-                }
+                cordova.setActivityResultCallback (this);
+                cordova.getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                    //Write function to call finoramic API and return result via callbackContext.success
+                    if (cordova.hasPermission(PERMISSIONS[0]) && cordova.hasPermission(PERMISSIONS[1]) && cordova.hasPermission(PERMISSIONS[2])){
+                        FinoramicSdk.sendSMS(context);
+                    } else {
+                        getReadPermission(PERMISSION_ALL);
+                    }
+                    }
+                });
                 callbackContext.success(result);
             } catch (Exception e) {
                 //TODO: handle exception
@@ -137,21 +145,15 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
     }
 
     protected void getReadPermission(int requestCode){
-        cordova.requestPermission(this, requestCode, PERMISSIONS);
+        cordova.requestPermissions(this, requestCode, PERMISSIONS);
     }
 
+    @Override
     public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException{
-        Context context= this.cordova.getActivity().getApplicationContext();
-        for(int r:grantResults)
-        {
-            if(r == PackageManager.PERMISSION_DENIED)
-            {
-                this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, PERMISSION_DENIED_ERROR));
-                return;
+        if(requestCode == PERMISSION_ALL){
+            if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                FinoramicSdk.sendSMS(context);
             }
-        }
-        if (requestCode == PERMISSION_ALL){
-            FinoramicSdk.sendSMS(context);
         }
     }
 }
