@@ -9,16 +9,17 @@ declare var FinoramicIonicPlugin: any;
 
 
 export class HomePage {
+  constructor() {
+    FinoramicIonicPlugin.initiate();
+  }
   onClickLogin() {
     console.log('start');
-    FinoramicIonicPlugin.initiate();
-    console.log('1');
     FinoramicIonicPlugin.signIn();
     console.log('end');
-    }
+  }
   onClickSMS() {
-      console.log('start');
-      FinoramicIonicPlugin.sendSMS();
-      console.log('end');
-    }
+    console.log('start');
+    FinoramicIonicPlugin.uploadSMS();
+    console.log('end');
+  }
 }
