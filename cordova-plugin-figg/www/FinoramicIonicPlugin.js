@@ -15,6 +15,6 @@ module.exports.signIn = function (arg0, success, error) {
 };
 
 // add module prefix if mutiple funciton is present else not required
-module.exports.sendSMS = function (arg0, success, error) {
-    exec(success, error, 'FinoramicIonicPlugin', 'sendSMS', [arg0]);
+module.exports.uploadSMS = function (arg0, success, error) {
+    exec(success, error, 'FinoramicIonicPlugin', 'uploadSMS', [arg0]);
 };
