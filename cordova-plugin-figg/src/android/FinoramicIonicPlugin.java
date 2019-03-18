@@ -27,14 +27,10 @@ import static com.figg.sdk.android.Constants.PERMISSIONS;
  * This class echoes a string called from JavaScript.
  */
 public class FinoramicIonicPlugin extends CordovaPlugin {
-    private final String CLIENT_ID = "com.figg";
 	private final int SIGN_IN_REQUEST = 10001;
 	private final int PERMISSION_ALL = 0;
 	private final String TAG = "finoramic-sdk";
-    private final String[] extraScopes = {"https://www.googleapis.com/auth/contacts.readonly"};
     public static final int PERMISSION_DENIED_ERROR = 20;
-
-    private final String GOOGLE_CLIENT_ID = "695617984308-fl04vs5sb8cd3298prk5vimr7jupjivl.apps.googleusercontent.com";
 
     public CallbackContext callbackContext;
     public Context context;
@@ -45,11 +41,18 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
         this.context= this.cordova.getActivity().getApplicationContext();
         this.callbackContext = callbackContext;
         if (action.equals("initiate")) {
-            this.initiate(args, callbackContext);
+            String clientID = args.getString(0);
+            this.initiate(clientID, callbackContext);
             return true;
         }
         if (action.equals("signIn")) {
-            this.signIn(args, callbackContext);
+            String GOOGLE_CLIENT_ID = args.getString(0);
+            String[] extraScopes = {};
+            // JSONArray jsonArray = args.getJSONArray(1);
+            // for(int j=0;j<jsonArray.length();j++){
+            //     extraScopes[j] = jsonArray.get(j).toString();
+            // }
+            this.signIn(GOOGLE_CLIENT_ID, extraScopes, callbackContext);
             return true;
         }
         if (action.equals("uploadSMS")) {
@@ -59,24 +62,19 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
         return false;
     }
 
-    private void initiate(JSONArray args, CallbackContext callbackContext){
-        if (args != null) {
+    private void initiate(String clientID, CallbackContext callbackContext){
             try {
                 String result = "success";
                 //Write function to call finoramic API and return result via callbackContext.success
-                FinoramicSdk.init(context, CLIENT_ID);
+                FinoramicSdk.init(context, clientID);
                 callbackContext.success(result);
             } catch (Exception e) {
                 //TODO: handle exception
                 callbackContext.error("Something went wrong"+ e);
             }
-        } else {
-            callbackContext.error("Expected one non-empty string argument.");
-        }
     }
 
-    private void signIn(JSONArray args, CallbackContext callbackContext){
-        if (args != null) {
+    private void signIn(String GOOGLE_CLIENT_ID,String[] extraScopes, CallbackContext callbackContext){
             try {
                 String result = "success";
                 //Write function to call finoramic API and return result via callbackContext.success
@@ -93,9 +91,6 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
                 //TODO: handle exception
                 callbackContext.error("Something went wrong"+ e);
             }
-        } else {
-            callbackContext.error("Expected one non-empty string argument.");
-        }
     }
 
     @Override
