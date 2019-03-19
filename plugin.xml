@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-figg" version="1.0.0"
+	xmlns="http://apache.org/cordova/ns/plugins/1.0"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<name>FinoramicIonicPlugin</name>
+
+	<js-module name="FinoramicIonicPlugin" src="www/FinoramicIonicPlugin.js">
+		<clobbers target="FinoramicIonicPlugin" />
+	</js-module>
+
+	<platform name="android">
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="FinoramicIonicPlugin">
+				<param name="android-package" value="cordova.plugin.figg.FinoramicIonicPlugin" />
+			</feature>
+		</config-file>
+		<config-file parent="/*" target="AndroidManifest.xml">
+			<uses-permission android:name="android.permission.READ_SMS" />
+			<uses-permission android:name="android.permission.FINE_LOCATION" />
+		</config-file>
+	  <framework src="src/android/CustomGradle/custom.gradle" custom="true" type="gradleReference" />
+    <resource-file src="src/android/CustomGradle/finoramic-android-sdk.aar" target="libs/finoramic-android-sdk.aar" />
+		<source-file src="src/android/FinoramicIonicPlugin.java" target-dir="src/cordova/plugin/figg/FinoramicIonicPlugin" />
+	</platform>
+
+	<platform name="ios">
+		<config-file parent="/*" target="config.xml">
+			<feature name="FinoramicIonicPlugin">
+				<param name="ios-package" value="FinoramicIonicPlugin" />
+			</feature>
+		</config-file>
+		<source-file src="src/ios/FinoramicIonicPlugin.m" />
+	</platform>
+</plugin>
