@@ -1,15 +1,21 @@
 # cordov-plugin-figg
 
-## Installation
-`ionic cordova plugin add github link`
+## Installation </br>
+### To Add plugin
+`ionic cordova plugin add https://github.com/finoramic/ionic-finoramic-sdk.git`
 
-Inside home.page.ts.</br>
+### To remove plugin
+`ionic cordova plugin rm cordova-plugin-figg`
+
+Inside .ts file</br>
 Declare plugin
 
 ```
 declare var FinoramicIonicPlugin: any;
 ```
-Add following variable above Class
+Add following variable above Class</br>
+FINORAMIC_CLIENT_ID will be given by us.</br>
+GOOGLE_CLIENT_ID from firebase console
 ```
 const FINORAMIC_CLIENT_ID = '';
 const GOOGLE_CLIENT_ID = '';
@@ -20,7 +26,7 @@ constructor(){
   FinoramicIonicPlugin.initiate(FINORAMIC_CLIENT_ID);
 }
 ```
-Call the signIn Function for googleLogin with Finoramic
+Call the signIn Function for googleLogin with Finoramic anywhere inside the class.
 ```
  FinoramicIonicPlugin.signIn(GOOGLE_CLIENT_ID);
 ```
