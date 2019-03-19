@@ -1,14 +1,30 @@
-# ionic-project
-Following are the steps to start existing ionic App.
+# cordov-plugin-figg
 
-1. Install Ionic CLI globally with npm.\
-  Before proceeding, make sure the latest version of Node.js and npm are installed
-  ```
-  npm install -g ionic
-  ```
+## Installation
+`ionic cordova plugin add github link`
 
-2. To run ionic app.\
-  Start a android emulator or connect to Android phone.(OS API Level must be >=26)
-  ```
-  ionic cordova run android -l
-  ```
+Inside home.page.ts.</br>
+Declare plugin
+
+```
+declare var FinoramicIonicPlugin: any;
+```
+Add following variable above Class
+```
+const FINORAMIC_CLIENT_ID = '';
+const GOOGLE_CLIENT_ID = '';
+```
+Create a constructor and call the below function
+```
+constructor(){
+  FinoramicIonicPlugin.initiate(FINORAMIC_CLIENT_ID);
+}
+```
+Call the signIn Function for googleLogin with Finoramic
+```
+ FinoramicIonicPlugin.signIn(GOOGLE_CLIENT_ID);
+```
+For SMS Upload 
+```
+ FinoramicIonicPlugin.uploadSMS();
+```
