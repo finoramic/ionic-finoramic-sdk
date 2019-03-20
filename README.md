@@ -1,4 +1,4 @@
-# cordov-plugin-figg
+# cordova-plugin-finoramic
 
 ## Installation </br>
 ### To Add plugin
