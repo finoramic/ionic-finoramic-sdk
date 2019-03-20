@@ -1,11 +1,11 @@
-# cordova-plugin-finoramic
+# ionic-finoramic-sdk
 
 ## Installation </br>
 ### To Add plugin
 `ionic cordova plugin add https://github.com/finoramic/ionic-finoramic-sdk.git`
 
 ### To remove plugin
-`ionic cordova plugin rm cordova-plugin-finoramic`
+`ionic cordova plugin rm ionic-finoramic-sdk`
 
 ## API </br>
 1. Inside .ts file</br>
