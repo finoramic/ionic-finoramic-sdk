@@ -22,16 +22,20 @@ const FINORAMIC_CLIENT_ID = '';
 const GOOGLE_CLIENT_ID = '';
 ```
 3. Create a constructor and call the below function.These function should be called on Application opens.
+
+NOTE: Please pass CallbackContext with `success` and `error` methods. These methods will be called from SDK and in both methods arguments will be of String type.
+
 ```
 constructor(){
-  FinoramicIonicPlugin.initiate(FINORAMIC_CLIENT_ID);
+  FinoramicIonicPlugin.initiate(FINORAMIC_CLIENT_ID, CallbackContext);
 }
 ```
 4. Call the signIn Function for googleLogin with Finoramic anywhere inside the class.
 ```
- FinoramicIonicPlugin.signIn(GOOGLE_CLIENT_ID);
+ FinoramicIonicPlugin.signIn(GOOGLE_CLIENT_ID, extracopes, CallbackContext);
 ```
 5. For SMS Upload (Permissions for READ.SMS ,ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION will be asked on calling these function)
 ```
- FinoramicIonicPlugin.uploadSMS();
+ FinoramicIonicPlugin.uploadSMS(args, CallbackContext);
 ```
+NOTE: Pass empty JSONArray as args
