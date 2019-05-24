@@ -29,9 +29,32 @@ constructor(){
 ```
 4. Call the signIn Function for googleLogin with Finoramic anywhere inside the class.
 ```
- FinoramicIonicPlugin.signIn(GOOGLE_CLIENT_ID);
+ FinoramicIonicPlugin.signIn(GOOGLE_CLIENT_ID,
+      (response) => {
+        /*
+        Response structure
+        {"id":"",
+        "email":"",
+        "displayName":"",
+        "givenName":"",
+        "familyName":"",
+        "photoUrl":"",
+        "serverAuthCode":""} */
+        console.log('Response', response);
+      },
+      (error) => {
+        //Error
+        console.log('Error', error);
+      });
 ```
 5. For SMS Upload (Permissions for READ.SMS ,ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION will be asked on calling these function)
 ```
- FinoramicIonicPlugin.uploadSMS();
+ FinoramicIonicPlugin.uploadSMS('',
+      (response) => {
+        // response will be success of type string
+      },
+      (error) => {
+        // Error
+        console.log('Error', error);
+      });
 ```
