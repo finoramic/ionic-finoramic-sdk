@@ -52,6 +52,7 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
             // for(int j=0;j<jsonArray.length();j++){
             //     extraScopes[j] = jsonArray.get(j).toString();
             // }
+            cordova.setActivityResultCallback (this);
             this.signIn(GOOGLE_CLIENT_ID, extraScopes, callbackContext);
             return true;
         }
@@ -79,14 +80,12 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
                 String result = "success";
                 //Write function to call finoramic API and return result via callbackContext.success
                 Intent signInIntent = FinoramicSdk.getSignInIntent(context, GOOGLE_CLIENT_ID, extraScopes);
-                cordova.setActivityResultCallback (this);
                 cordova.getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         cordova.getActivity().startActivityForResult(signInIntent, SIGN_IN_REQUEST);
                     }
                 });
-                callbackContext.success(result);
             } catch (Exception e) {
                 //TODO: handle exception
                 callbackContext.error("Something went wrong"+ e);
@@ -101,13 +100,15 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
 		// Result returned from launching the Intent from FinoramicSdk.getSignInIntent(...)
 		if (requestCode == SIGN_IN_REQUEST) {
 			if (resultCode == Activity.RESULT_OK) {
-				String gAccount = data.getStringExtra("account");
+                String gAccount = data.getStringExtra("account");
 				if (gAccount != null) {
-					Log.d(TAG, "CLIENT RECEIVED GOOGLE ACCOUNT : " + gAccount);
 					// Do whatever you want with your Google User
+                    Log.d(TAG, "CLIENT RECEIVED GOOGLE ACCOUNT : " + gAccount);
+                    callbackContext.success(gAccount);
 				} else {
-					Log.d(TAG, "CLIENT DID NOT RECEIVE GOOGLE ACCOUNT");
-					// Handle unsuccessful sign-in
+                    // Handle unsuccessful sign-in
+                    Log.d(TAG, "CLIENT DID NOT RECEIVE GOOGLE ACCOUNT");
+                    callbackContext.error("unsuccessful sign-in");
 				}
 			}
 		}
