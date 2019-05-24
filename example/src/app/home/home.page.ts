@@ -14,9 +14,21 @@ export class HomePage {
     FinoramicIonicPlugin.initiate(FINORAMIC_CLIENT_ID);
   }
   onClickLogin() {
-    FinoramicIonicPlugin.signIn(GOOGLE_CLIENT_ID);
+    FinoramicIonicPlugin.signIn(GOOGLE_CLIENT_ID,
+      (response) => {
+        console.log('Response', response);
+      },
+      (error) => {
+        console.log('Error', error);
+      });
   }
   onClickSMS() {
-    FinoramicIonicPlugin.uploadSMS();
+    FinoramicIonicPlugin.uploadSMS('',
+      (response) => {
+        console.log('Response', response);
+      },
+      (error) => {
+        console.log('Error', error);
+      });
   }
 }
