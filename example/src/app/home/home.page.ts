@@ -13,8 +13,8 @@ export class HomePage {
   constructor() {
     FinoramicIonicPlugin.initiate(FINORAMIC_CLIENT_ID);
   }
-  onClickLogin() {
-    FinoramicIonicPlugin.signIn(GOOGLE_CLIENT_ID,
+  onClickSMS() {
+    FinoramicIonicPlugin.uploadSMS('',
       (response) => {
         console.log('Response', response);
       },
@@ -22,8 +22,11 @@ export class HomePage {
         console.log('Error', error);
       });
   }
-  onClickSMS() {
-    FinoramicIonicPlugin.uploadSMS('',
+  onClickGetUrl() {
+    FinoramicIonicPlugin.getUrl(FINORAMIC_CLIENT_ID,
+      FINORAMIC_CLIENT_ID,
+      FINORAMIC_CLIENT_ID,
+      false,
       (response) => {
         console.log('Response', response);
       },
