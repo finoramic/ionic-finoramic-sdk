@@ -10,11 +10,10 @@ module.exports.initiate = function (arg0, success, error) {
 };
 
 // add module prefix if mutiple funciton is present else not required
-module.exports.signIn = function (arg0, success, error) {
-    exec(success, error, 'FinoramicIonicPlugin', 'signIn', [arg0]);
-};
-
-// add module prefix if mutiple funciton is present else not required
 module.exports.uploadSMS = function (arg0, success, error) {
     exec(success, error, 'FinoramicIonicPlugin', 'uploadSMS', [arg0]);
 };
+
+module.exports.getUrl = function (arg0, arg1, arg2, arg3, success, error) {
+    exec(success, error, 'FinoramicIonicPlugin', 'getUrl', [arg0, arg1, arg2, arg3]);
+}
