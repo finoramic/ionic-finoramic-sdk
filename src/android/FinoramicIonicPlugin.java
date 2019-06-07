@@ -49,12 +49,12 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
             this.uploadSMS(args, callbackContext);
             return true;
         }
-        if (action.equals("getUrl")) {
-            String finoramic_client_id = args.getString(0);
+        if (action.equals("getGoogleSignIn")) {
+            String client_id = args.getString(0);
             String user_id = args.getString(1);
             String redirect_uri = args.getString(2);
             Boolean fetch_profile = Boolean.valueOf(args.getString(3));
-            this.getUrl(finoramic_client_id, user_id, redirect_uri, fetch_profile, callbackContext);
+            this.getGoogleSignIn(client_id, user_id, redirect_uri, fetch_profile, callbackContext);
             return true;
         }
         return false;
@@ -111,16 +111,43 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
         }
     }
 
-    private void getUrl(String finoramic_client_id,
-    String user_id, String redirect_uri, Boolean fetch_profile, CallbackContext callbackContext){
+    private void getGoogleSignIn(String clientId,
+        String userId,String redirectUri,String fetchProfile,CallbackContext callbackContext){
         try {
             String result = "success";
             //Write function to call finoramic API and return result via callbackContext.success
-            String url = FinoramicSdk.getUrl(finoramic_client_id, user_id, redirect_uri, fetch_profile);
-            callbackContext.success(url);
+            Intent signInIntent = FinoramicSdk.getGoogleSignIn(context, clientId, userId, redirectUri, fetchProfile);
+            cordova.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    cordova.getActivity().startActivityForResult(signInIntent, SIGN_IN_REQUEST);
+                }
+            });
         } catch (Exception e) {
             //TODO: handle exception
             callbackContext.error("Something went wrong"+ e);
         }
-}
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult");
+
+        // Result returned from launching the Intent from FinoramicSdk.getSignInIntent(...)
+        if (requestCode == SIGN_IN_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                String gAccount = data.getStringExtra("account");
+                if (gAccount != null) {
+                    // Do whatever you want with your Google User
+                    Log.d(TAG, "CLIENT RECEIVED GOOGLE ACCOUNT : " + gAccount);
+                    callbackContext.success(gAccount);
+                } else {
+                    // Handle unsuccessful sign-in
+                    Log.d(TAG, "CLIENT DID NOT RECEIVE GOOGLE ACCOUNT");
+                    callbackContext.error("unsuccessful sign-in");
+                }
+            }
+        }
+    }
 }
