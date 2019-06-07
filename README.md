@@ -46,6 +46,7 @@ FinoramicIonicPlugin.getGoogleSignIn(<CLIENT_ID>, <USER_ID>, <REDIRECT_URL>, <FE
 6. Upon successful login, google profile will be sent in the success method of callback context (if fetch_profile is set to true).
 
 The format of data is a JSONString
+
 |param|value|comments|
 |---|---|---|
 |clientInput|JSON|Contains client input in encoded JSON format |
