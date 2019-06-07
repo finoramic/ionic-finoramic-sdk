@@ -18,59 +18,61 @@ declare var FinoramicIonicPlugin: any;
 
 ```
 constructor(){
-  FinoramicIonicPlugin.initiate(FINORAMIC_CLIENT_ID, CallbackContext);
+  FinoramicIonicPlugin.initiate(<CLIENT_ID>, CallbackContext);
 }
 ```
 
 |param|value|comments|
 |---|---|---|
-|FINORAMIC_CLIENT_ID|string|Value provided by Finoramic|
+|CLIENT_ID|string|Value provided by Finoramic|
 |CallbackContext||must contain success and error methods|
 
 4. Create a googleSignIn Button
 
-5. Call getUrl to fetch the url of Finoramic OAuth for Google Login. Use this url for onClick of Google Login Button.
+5. When this button is clicked, call getGoogleSignIn method.
 
 ```
- FinoramicIonicPlugin.getUrl(FINORAMIC_CLIENT_ID, user_id, redirect_uri, fetch_profile);
+FinoramicIonicPlugin.getGoogleSignIn(<CLIENT_ID>, <USER_ID>, <REDIRECT_URL>, <FETCH_PROFILE>, CallbackContext);
 ```
 
-|param|value|comments|
-|---|---|---|
-|FINORAMIC_CLIENT_ID|string|Value provided by Finoramic|
-|user_id|string|Client Unique Identifier for user|
-|redirect_uri|string|Url to redirect to after login|
-|fetch_profile|boolean|true value returns user google profile as query param along with redirect|
+|param|required|value|comments|
+|---|---|---|---|
+|**client_id**|required|string|Provided by Finoramic|
+|**user_id**|required|string|Client Unique User Identifier|
+|**redirect_url**|required|string|URL to redirect to after login|
+|fetch_profile|optional|boolean|If set to true, Finoramic will send user’s Google profile details along with redirect|
+|CallbackContext|||must contain success and error methods|
 
-6. After login, user will be redirected to redirect_uri. If fetch_profile is set to true, user google profile will be sent encoded as query param.
+6. Upon successful login, google profile will be sent in the success method of callback context (if fetch_profile is set to true).
 
+The format of data is a JSONString
 |param|value|comments|
 |---|---|---|
 |clientInput|JSON|Contains client input in encoded JSON format |
 |finoramicOutput|JSON|Contains users google profile info in encoded JSON format|
 
-When decoded, response will look like
+When parsed, response will look like
 ```
-clientInput: {
-  "clientUserId": "abc123"
-}
-```
-```
-finoramicOutput: {
-  "googleUserId": "10746794874287731198",
-  "email": "ravi.verma1337@gmail.com",
-  "response": {
-    "id": "10746794874287731198",
-    "name": "Ravi Verma",
-    "displayName": "Ravi Verma",
-    "familyName": "Verma",
-    "givenName": "Ravi",
-    "displayNameLastFirst": "Verma, Ravi",
+{
+  clientInput: {
+    "clientUserId": "abc123"
+  },
+  finoramicOutput: {
+    "googleUserId": "10746794874287731198",
     "email": "ravi.verma1337@gmail.com",
-    "dob": {
-      "year": 1990,
-      "month": 2,
-      "day": 15
+    "response": {
+      "id": "10746794874287731198",
+      "name": "Ravi Verma",
+      "displayName": "Ravi Verma",
+      "familyName": "Verma",
+      "givenName": "Ravi",
+      "displayNameLastFirst": "Verma, Ravi",
+      "email": "ravi.verma1337@gmail.com",
+      "dob": {
+        "year": 1990,
+        "month": 2,
+        "day": 15
+      }
     }
   }
 }
@@ -87,7 +89,7 @@ finoramicOutput: {
 }
 ```
 
-6. To start uploading SMS, call the uploadSMS. Permissions for READ.SMS, ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION will be asked.
+7. To start uploading SMS, call the uploadSMS. Permissions for READ.SMS, ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION will be asked.
 ```
  FinoramicIonicPlugin.uploadSMS(args, CallbackContext);
 ```
@@ -104,8 +106,6 @@ import { Component } from '@angular/core';
 
 declare var FinoramicIonicPlugin: any;
 
-const FINORAMIC_CLIENT_ID = '<Client ID>';
-
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -114,15 +114,15 @@ const FINORAMIC_CLIENT_ID = '<Client ID>';
 
 export class HomePage {
   constructor() {
-    FinoramicIonicPlugin.initiate(FINORAMIC_CLIENT_ID);
+    FinoramicIonicPlugin.initiate(<CLIENT_ID>);
   }
   onClickLogin() {
-    FinoramicIonicPlugin.signIn(GOOGLE_CLIENT_ID,
+    FinoramicIonicPlugin.getGoogleSignIn(<CLIENT_ID>, <USER_ID>, <REDIRECT_URL>, <FETCH_PROFILE>,
       (response) => {
-        console.log('Response', response);
+        // Handle successful sign-in
       },
       (error) => {
-        console.log('Error', error);
+        // Handle unsuccessful sign-in
       });
   }
   onClickSMS() {
@@ -135,11 +135,6 @@ export class HomePage {
       });
   }
 }
-```
-
-## Uninstallation
-```
-ionic cordova plugin rm ionic-finoramic-sdk
 ```
 
 ## DISCLAIMER
