@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 declare var FinoramicIonicPlugin: any;
 const FINORAMIC_CLIENT_ID = 'com.figg';
-const GOOGLE_CLIENT_ID = '695617984308-fl04vs5sb8cd3298prk5vimr7jupjivl.apps.googleusercontent.com';
 const extraScopes = ['https://www.googleapis.com/auth/contacts.readonly'];
+const USER_ID = '';
+const REDIRECT_URL = '';
+const FETCH_PROFILE = '';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -22,11 +25,11 @@ export class HomePage {
         console.log('Error', error);
       });
   }
-  onClickGetUrl() {
-    FinoramicIonicPlugin.getUrl(FINORAMIC_CLIENT_ID,
-      FINORAMIC_CLIENT_ID,
-      FINORAMIC_CLIENT_ID,
-      false,
+  onClickGetGoogleSignIn() {
+    FinoramicIonicPlugin.getGoogleSignIn(FINORAMIC_CLIENT_ID,
+      USER_ID,
+      REDIRECT_URL,
+      FETCH_PROFILE,
       (response) => {
         console.log('Response', response);
       },
