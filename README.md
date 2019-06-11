@@ -27,7 +27,7 @@ The initiate method takes 3 params
 
 ```
 constructor(){
-  FinoramicIonicPlugin.initiate(<CLIENT_ID>, <CLIENT_USER_ID> CallbackContext);
+  FinoramicIonicPlugin.initiate(<CLIENT_ID>, <CLIENT_USER_ID>, CallbackContext);
 }
 ```
 
