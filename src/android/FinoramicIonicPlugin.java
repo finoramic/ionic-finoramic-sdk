@@ -63,7 +63,7 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
         return false;
     }
 
-    private void initiate(String clientId, String clientUserId, CallbackContext callbackContext){
+    private void initiate(String clientId, String clientUserId, CallbackContext callbackContext) {
         try {
             String result = "success";
             FinoramicSdk.init(context, clientId, clientUserId);
@@ -73,7 +73,7 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
         }
     }
 
-    private void uploadSMS(JSONArray args, CallbackContext callbackContext){
+    private void uploadSMS(JSONArray args, CallbackContext callbackContext) {
         if (args != null) {
             try {
                 String result = "success";
@@ -81,7 +81,7 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
                 cordova.getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                    if (cordova.hasPermission(PERMISSIONS[0]) && cordova.hasPermission(PERMISSIONS[1]) && cordova.hasPermission(PERMISSIONS[2])){
+                    if (cordova.hasPermission(PERMISSIONS[0]) && cordova.hasPermission(PERMISSIONS[1]) && cordova.hasPermission(PERMISSIONS[2])) {
                         FinoramicSdk.sendSMS(context);
                     } else {
                         getReadPermission(PERMISSION_ALL);
@@ -97,14 +97,14 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
         }
     }
 
-    protected void getReadPermission(int requestCode){
+    protected void getReadPermission(int requestCode) {
         cordova.requestPermissions(this, requestCode, PERMISSIONS);
     }
 
     @Override
-    public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException{
-        if(requestCode == PERMISSION_ALL){
-            if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+    public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException {
+        if(requestCode == PERMISSION_ALL) {
+            if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 FinoramicSdk.sendSMS(context);
             }
         }
