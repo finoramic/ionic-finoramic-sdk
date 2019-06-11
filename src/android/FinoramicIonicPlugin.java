@@ -64,13 +64,13 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
     }
 
     private void initiate(String clientId, String clientUserId, CallbackContext callbackContext){
-            try {
-                String result = "success";
-                FinoramicSdk.init(context, clientId, clientUserId);
-                callbackContext.success(result);
-            } catch (Exception e) {
-                callbackContext.error("Something went wrong"+ e);
-            }
+        try {
+            String result = "success";
+            FinoramicSdk.init(context, clientId, clientUserId);
+            callbackContext.success(result);
+        } catch (Exception e) {
+            callbackContext.error("Something went wrong"+ e);
+        }
     }
 
     private void uploadSMS(JSONArray args, CallbackContext callbackContext){
