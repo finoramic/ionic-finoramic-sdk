@@ -16,32 +16,36 @@ declare var FinoramicIonicPlugin: any;
 
 3. Call initiate() function to initiate the sdk. This method must be called as soon as application starts
 
+The initiate method takes 3 params
+
+|param|required|value|comments|
+|---|---|---|---|
+|**client_id**|required|String|Provided by Finoramic|
+|**user_id**|required|String|Client Unique User Identifier|
+|**context**|required|this|Current class context|
+
+
 ```
 constructor(){
-  FinoramicIonicPlugin.initiate(<CLIENT_ID>, CallbackContext);
+  FinoramicIonicPlugin.initiate(<CLIENT_ID>, <CLIENT_USER_ID> CallbackContext);
 }
 ```
-
-|param|value|comments|
-|---|---|---|
-|CLIENT_ID|string|Value provided by Finoramic|
-|CallbackContext||must contain success and error methods|
 
 4. Create a googleSignIn Button
 
 5. When this button is clicked, call getGoogleSignIn method.
 
-```
-FinoramicIonicPlugin.getGoogleSignIn(<CLIENT_ID>, <USER_ID>, <REDIRECT_URL>, <FETCH_PROFILE>, CallbackContext);
-```
-
 |param|required|value|comments|
 |---|---|---|---|
-|**client_id**|required|string|Provided by Finoramic|
-|**user_id**|required|string|Client Unique User Identifier|
 |**redirect_url**|required|string|URL to redirect to after login|
 |fetch_profile|optional|boolean|If set to true, Finoramic will send user’s Google profile details along with redirect|
-|CallbackContext|||must contain success and error methods|
+|**CallbackContext**|required|this|must contain success and error methods|
+
+```
+FinoramicIonicPlugin.getGoogleSignIn(<REDIRECT_URL>, <FETCH_PROFILE>, CallbackContext);
+```
+
+This opens the WebView and prompts the user to select a Google account to sign in with.
 
 6. Upon successful login, google profile will be sent in the success method of callback context (if fetch_profile is set to true).
 
@@ -90,7 +94,8 @@ finoramicOutput: {
 }
 ```
 
-7. To start uploading SMS, call the uploadSMS. Permissions for READ.SMS, ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION will be asked.
+7. To start uploading SMS, call the uploadSMS as soon as SMS permissions are granted. Permissions for READ.SMS, ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION will be asked.
+
 ```
  FinoramicIonicPlugin.uploadSMS(args, CallbackContext);
 ```
@@ -98,7 +103,7 @@ finoramicOutput: {
 |param|value|comments|
 |---|---|---|
 |args|string|Send empty string|
-|CallbackContext||must contain success and error methods|
+|CallbackContext|this|must contain success and error methods|
 
 ## Example
 
@@ -115,10 +120,16 @@ declare var FinoramicIonicPlugin: any;
 
 export class HomePage {
   constructor() {
-    FinoramicIonicPlugin.initiate(<CLIENT_ID>);
+    FinoramicIonicPlugin.initiate(<CLIENT_ID>, <CLIENT_USER_ID>,
+      (response) => {
+        // Handle successful initiate
+      },
+      (error) => {
+        // Handle unsuccessful initiate
+      });
   }
   onClickLogin() {
-    FinoramicIonicPlugin.getGoogleSignIn(<CLIENT_ID>, <USER_ID>, <REDIRECT_URL>, <FETCH_PROFILE>,
+    FinoramicIonicPlugin.getGoogleSignIn(<REDIRECT_URL>, <FETCH_PROFILE>,
       (response) => {
         // Handle successful sign-in
       },
@@ -129,10 +140,10 @@ export class HomePage {
   onClickSMS() {
     FinoramicIonicPlugin.uploadSMS('',
       (response) => {
-        console.log('Response', response);
+        // Handle successful sms upload
       },
       (error) => {
-        console.log('Error', error);
+        // Handle unsuccessful sms upload
       });
   }
 }
