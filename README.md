@@ -122,9 +122,11 @@ export class HomePage {
   constructor() {
     FinoramicIonicPlugin.initiate(<CLIENT_ID>, <CLIENT_USER_ID>,
       (response) => {
+        // Value of response here is string "success"
         // Handle successful initiate
       },
       (error) => {
+        // Value of error here is string of error
         // Handle unsuccessful initiate
       });
   }
@@ -140,9 +142,11 @@ export class HomePage {
   onClickSMS() {
     FinoramicIonicPlugin.uploadSMS('',
       (response) => {
+        // Value of response here is string "success"
         // Handle successful sms upload
       },
       (error) => {
+        // Value of error here is string of error
         // Handle unsuccessful sms upload
       });
   }
