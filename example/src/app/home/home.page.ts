@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 declare var FinoramicIonicPlugin: any;
-const FINORAMIC_CLIENT_ID = 'com.figg';
-const extraScopes = ['https://www.googleapis.com/auth/contacts.readonly'];
-const USER_ID = '';
+const CLIENT_ID = 'com.figg';
+const CLIENT_USER_ID = '';
 const REDIRECT_URL = '';
 const FETCH_PROFILE = '';
 
@@ -14,7 +13,7 @@ const FETCH_PROFILE = '';
 
 export class HomePage {
   constructor() {
-    FinoramicIonicPlugin.initiate(FINORAMIC_CLIENT_ID);
+    FinoramicIonicPlugin.initiate(CLIENT_ID, CLIENT_USER_ID);
   }
   onClickSMS() {
     FinoramicIonicPlugin.uploadSMS('',
@@ -26,8 +25,7 @@ export class HomePage {
       });
   }
   onClickGetGoogleSignIn() {
-    FinoramicIonicPlugin.getGoogleSignIn(FINORAMIC_CLIENT_ID,
-      USER_ID,
+    FinoramicIonicPlugin.getGoogleSignIn(
       REDIRECT_URL,
       FETCH_PROFILE,
       (response) => {
