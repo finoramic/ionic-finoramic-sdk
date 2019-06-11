@@ -48,6 +48,12 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
             this.uploadSMS(args, callbackContext);
             return true;
         }
+        if (action.equals("getUrl")) {
+            String redirect_uri = args.getString(0);
+            Boolean fetch_profile = Boolean.valueOf(args.getString(1));
+            this.getUrl(redirect_uri, fetch_profile, callbackContext);
+            return true;
+        }
         if (action.equals("getGoogleSignIn")) {
             String redirect_uri = args.getString(0);
             Boolean fetch_profile = Boolean.valueOf(args.getString(1));
@@ -101,6 +107,16 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
             if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 FinoramicSdk.sendSMS(context);
             }
+        }
+    }
+
+    private void getUrl(String redirectUrl, Boolean fetchProfile, CallbackContext callbackContext) {
+        try {
+            String result = "success";
+            FinoramicSdk.getUrl(redirectUrl, fetchProfile);
+            callbackContext.success(result);
+        } catch (Exception e) {
+            callbackContext.error("Something went wrong"+ e);
         }
     }
 
