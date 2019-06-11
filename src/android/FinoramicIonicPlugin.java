@@ -39,8 +39,9 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
         this.context= this.cordova.getActivity().getApplicationContext();
         this.callbackContext = callbackContext;
         if (action.equals("initiate")) {
-            String clientID = args.getString(0);
-            this.initiate(clientID, callbackContext);
+            String clientId = args.getString(0);
+            String clientUserId = args.getString(1);
+            this.initiate(clientId, clientUserId, callbackContext);
             return true;
         }
         if (action.equals("uploadSMS")) {
@@ -48,20 +49,18 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
             return true;
         }
         if (action.equals("getGoogleSignIn")) {
-            String client_id = args.getString(0);
-            String user_id = args.getString(1);
-            String redirect_uri = args.getString(2);
-            Boolean fetch_profile = Boolean.valueOf(args.getString(3));
-            this.getGoogleSignIn(client_id, user_id, redirect_uri, fetch_profile, callbackContext);
+            String redirect_uri = args.getString(0);
+            Boolean fetch_profile = Boolean.valueOf(args.getString(1));
+            this.getGoogleSignIn(redirect_uri, fetch_profile, callbackContext);
             return true;
         }
         return false;
     }
 
-    private void initiate(String clientID, CallbackContext callbackContext){
+    private void initiate(String clientId, String clientUserId, CallbackContext callbackContext){
             try {
                 String result = "success";
-                FinoramicSdk.init(context, clientID);
+                FinoramicSdk.init(context, clientId, clientUserId);
                 callbackContext.success(result);
             } catch (Exception e) {
                 callbackContext.error("Something went wrong"+ e);
@@ -105,11 +104,10 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
         }
     }
 
-    private void getGoogleSignIn(String clientId,
-        String userId,String redirectUri,String fetchProfile,CallbackContext callbackContext){
+    private void getGoogleSignIn(String redirectUri, Boolean fetchProfile, CallbackContext callbackContext) {
         try {
             String result = "success";
-            Intent signInIntent = FinoramicSdk.getGoogleSignIn(context, clientId, userId, redirectUri, fetchProfile);
+            Intent signInIntent = FinoramicSdk.getGoogleSignIn(context, redirectUri, fetchProfile);
             cordova.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
