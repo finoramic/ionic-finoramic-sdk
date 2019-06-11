@@ -112,9 +112,8 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
 
     private void getUrl(String redirectUrl, Boolean fetchProfile, CallbackContext callbackContext) {
         try {
-            String result = "success";
-            FinoramicSdk.getUrl(redirectUrl, fetchProfile);
-            callbackContext.success(result);
+            String Url = FinoramicSdk.getUrl(redirectUrl, fetchProfile);
+            callbackContext.success(url);
         } catch (Exception e) {
             callbackContext.error("Something went wrong"+ e);
         }
