@@ -120,10 +120,10 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
         }
     }
 
-    private void getGoogleSignIn(String redirectUri, Boolean fetchProfile, CallbackContext callbackContext) {
+    private void getGoogleSignIn(String redirectUrl, Boolean fetchProfile, CallbackContext callbackContext) {
         try {
             String result = "success";
-            Intent signInIntent = FinoramicSdk.getGoogleSignIn(context, redirectUri, fetchProfile);
+            Intent signInIntent = FinoramicSdk.getGoogleSignIn(context, redirectUrl, fetchProfile);
             cordova.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
