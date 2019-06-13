@@ -51,7 +51,10 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
         if (action.equals("getUrl")) {
             String redirect_uri = args.getString(0);
             Boolean fetch_profile = Boolean.valueOf(args.getString(1));
-            this.getUrl(redirect_uri, fetch_profile, callbackContext);
+            if (Boolean.valueOf(args.getString(2))) {
+                Boolean dev = Boolean.valueOf(args.getString(2));
+            }
+            this.getUrl(redirect_uri, fetch_profile, dev, callbackContext);
             return true;
         }
         if (action.equals("getGoogleSignIn")) {
@@ -113,9 +116,14 @@ public class FinoramicIonicPlugin extends CordovaPlugin {
         }
     }
 
-    private void getUrl(String redirectUrl, Boolean fetchProfile, CallbackContext callbackContext) {
+    private void getUrl(String redirectUrl, Boolean fetchProfile, Boolean dev, CallbackContext callbackContext) {
         try {
-            String Url = FinoramicSdk.getUrl(redirectUrl, fetchProfile);
+            String Url;
+            if (dev) {
+                url = FinoramicSdk.getDevUrl(redirectUrl, fetchProfile);
+            } else {
+                url = FinoramicSdk.getProdUrl(redirectUrl, fetchProfile);
+            }
             callbackContext.success(url);
         } catch (Exception e) {
             callbackContext.error("Something went wrong"+ e);
