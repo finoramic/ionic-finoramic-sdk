@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 declare var FinoramicIonicPlugin: any;
 const CLIENT_ID = 'com.figg';
-const CLIENT_USER_ID = '';
-const REDIRECT_URL = '';
-const FETCH_PROFILE = '';
+const CLIENT_USER_ID = 'abc123';
+const REDIRECT_URL = 'https://www.finoramic.com';
+const FETCH_PROFILE = true;
+const DEV_ENV = true;
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,6 @@ export class HomePage {
       },
       (error) => {
         console.log('Error', error);
-      });
+      }, DEV_ENV);
   }
 }
