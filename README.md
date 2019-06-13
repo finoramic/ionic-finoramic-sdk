@@ -40,9 +40,10 @@ constructor(){
 |**redirect_url**|required|string|URL to redirect to after login|
 |fetch_profile|optional|boolean|If set to true, Finoramic will send user’s Google profile details along with redirect|
 |**CallbackContext**|required|this|must contain success and error methods|
+|dev_env||boolean|Set to true while testing in sandbox environment|
 
 ```
-FinoramicIonicPlugin.getGoogleSignIn(<REDIRECT_URL>, <FETCH_PROFILE>, CallbackContext);
+FinoramicIonicPlugin.getGoogleSignIn(<REDIRECT_URL>, <FETCH_PROFILE>, CallbackContext, <DEV_ENV>);
 ```
 
 This opens the WebView and prompts the user to select a Google account to sign in with.
@@ -137,7 +138,7 @@ export class HomePage {
       },
       (error) => {
         // Handle unsuccessful sign-in
-      });
+      }, <DEV_ENV>);
   }
   onClickSMS() {
     FinoramicIonicPlugin.uploadSMS('',
