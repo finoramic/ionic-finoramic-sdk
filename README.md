@@ -23,11 +23,11 @@ The initiate method takes 3 params
 |**client_id**|required|String|Provided by Finoramic|
 |**user_id**|required|String|Client Unique User Identifier|
 |**context**|required|this|Current class context|
-
+|**environment**|required|String|Variable to choose **sandbox** or **production** environments|
 
 ```
 constructor(){
-  FinoramicIonicPlugin.initiate(<CLIENT_ID>, <CLIENT_USER_ID>, CallbackContext);
+  FinoramicIonicPlugin.initiate(<CLIENT_ID>, <CLIENT_USER_ID>, <ENVIRONMENT>, CallbackContext);
 }
 ```
 
@@ -40,10 +40,9 @@ constructor(){
 |**redirect_url**|required|string|URL to redirect to after login|
 |fetch_profile|optional|boolean|If set to true, Finoramic will send user’s Google profile details along with redirect|
 |**CallbackContext**|required|this|must contain success and error methods|
-|dev_env||boolean|Set to true while testing in sandbox environment|
 
 ```
-FinoramicIonicPlugin.getGoogleSignIn(<REDIRECT_URL>, <FETCH_PROFILE>, CallbackContext, <DEV_ENV>);
+FinoramicIonicPlugin.getGoogleSignIn(<REDIRECT_URL>, <FETCH_PROFILE>, CallbackContext);
 ```
 
 This opens the WebView and prompts the user to select a Google account to sign in with.
@@ -121,7 +120,7 @@ declare var FinoramicIonicPlugin: any;
 
 export class HomePage {
   constructor() {
-    FinoramicIonicPlugin.initiate(<CLIENT_ID>, <CLIENT_USER_ID>,
+    FinoramicIonicPlugin.initiate(<CLIENT_ID>, <CLIENT_USER_ID>, <ENVIRONMENT>,
       (response) => {
         // Value of response here is string "success"
         // Handle successful initiate
@@ -138,7 +137,7 @@ export class HomePage {
       },
       (error) => {
         // Handle unsuccessful sign-in
-      }, <DEV_ENV>);
+      });
   }
   onClickSMS() {
     FinoramicIonicPlugin.uploadSMS('',
