@@ -16,6 +16,6 @@ module.exports.getUrl = function (arg0, arg1, success, error) {
     exec(success, error, 'FinoramicIonicPlugin', 'getUrl', [arg0, arg1]);
 }
 
-module.exports.getGoogleSignIn = function (arg0, arg1, success, error) {
-    exec(success, error, 'FinoramicIonicPlugin', 'getGoogleSignIn', [arg0, arg1]);
+module.exports.getGoogleSignIn = function (arg0, arg1, success, error, arg3) {
+    exec(success, error, 'FinoramicIonicPlugin', 'getGoogleSignIn', [arg0, arg1, arg3]);
 }
