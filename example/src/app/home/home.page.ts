@@ -4,7 +4,7 @@ const CLIENT_ID = 'com.figg';
 const CLIENT_USER_ID = 'abc123';
 const REDIRECT_URL = 'https://www.finoramic.com';
 const FETCH_PROFILE = true;
-const DEV_ENV = true;
+const ENV = 'sandbox';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +14,7 @@ const DEV_ENV = true;
 
 export class HomePage {
   constructor() {
-    FinoramicIonicPlugin.initiate(CLIENT_ID, CLIENT_USER_ID);
+    FinoramicIonicPlugin.initiate(CLIENT_ID, CLIENT_USER_ID, ENV);
   }
   onClickSMS() {
     FinoramicIonicPlugin.uploadSMS('',
@@ -34,6 +34,6 @@ export class HomePage {
       },
       (error) => {
         console.log('Error', error);
-      }, DEV_ENV);
+      });
   }
 }
