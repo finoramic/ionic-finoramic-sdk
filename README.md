@@ -8,6 +8,21 @@
 > ionic cordova plugin add https://github.com/finoramic/ionic-finoramic-sdk.git
 ```
 
+We use the following versions in our app level build.gradle
+
+```
+dependencies {
+  implementation project(':finoramic-android-sdk')
+  implementation 'com.google.android.gms:play-services-location:16.0.0'
+  implementation 'com.google.android.gms:play-services-auth:16.0.1'
+  implementation 'com.google.firebase:firebase-auth:16.0.5'
+  implementation "com.android.support:appcompat-v7:26.1.0"
+  implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+}
+```
+NOTE: Any deviation in these versions may cause an error, please contact us if you need to use different versions.
+
+
 2. Declare the plugin in a .ts file
 
 ```
